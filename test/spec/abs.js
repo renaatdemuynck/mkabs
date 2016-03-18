@@ -48,11 +48,13 @@ describe('mkabs:', function() {
       var links = collect(result, Node.LINK)
         , slash = links[0]
         , anchor = links[1]
-        , absolute = links[2];
+        , absolute = links[2]
+        , query = links[3];
 
       expect(slash._destination).to.eql('http://base.com/README.md');
       expect(anchor._destination).to.eql('http://base.com#api');
       expect(absolute._destination).to.eql('http://example.com');
+      expect(query._destination).to.eql('http://base.com?foo=val');
 
       // eof main document
       expect(result[2]._type).to.eql(Node.EOF);
