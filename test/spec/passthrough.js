@@ -4,25 +4,12 @@ var expect = require('chai').expect
   , Node = mkast.Node
   , parser = new mkast.Parser()
   , mkabs = require('../../index')
-  , Absolute = require('../../absolute')
   , utils = require('../util')
   , collect = mkast.walker.collect;
 
 describe('mkabs:', function() {
 
-  it('should create stream with no options', function(done) {
-    var stream = new Absolute();
-    expect(stream).to.be.an('object');
-    done();
-  });
-  
-  it('should return stream with no options', function(done) {
-    var stream = mkabs();
-    expect(stream).to.be.an('object');
-    done();
-  });
-
-  it('should make relative links absolute', function(done) {
+  it('should passthrough with no base', function(done) {
     var source = 'test/fixtures/abs.md'
       , target = 'target/abs.json.log'
       , data = parser.parse('' + fs.readFileSync(source))
@@ -33,11 +20,9 @@ describe('mkabs:', function() {
 
     var input = mkast.serialize(data)
       , output = fs.createWriteStream(target)
-      , opts = {input: input, output: output, base: 'http://base.com'};
+      , opts = {input: input, output: output};
     
-    mkabs(opts);
-
-    output.once('finish', function() {
+    function onFinish() {
       var result = utils.result(target);
 
       // open document
@@ -50,15 +35,17 @@ describe('mkabs:', function() {
         , anchor = links[1]
         , absolute = links[2];
 
-      expect(slash._destination).to.eql('http://base.com/README.md');
-      expect(anchor._destination).to.eql('http://base.com#api');
+      expect(slash._destination).to.eql('/README.md');
+      expect(anchor._destination).to.eql('#api');
       expect(absolute._destination).to.eql('http://example.com');
 
       // eof main document
       expect(result[2]._type).to.eql(Node.EOF);
 
       done();
-    })
+    }
+
+    mkabs(opts, onFinish);
   });
 
 });

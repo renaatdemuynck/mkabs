@@ -46,6 +46,7 @@ Returns an output stream.
 
 #### Options
 
+* `base` String path to prepend to relative links.
 * `input` Readable input stream.
 * `output` Writable output stream.
 

@@ -4,7 +4,8 @@ var expect = require('chai').expect
   , Node = mkast.Node
   , parser = new mkast.Parser()
   , mkabs = require('../../index')
-  , utils = require('../util');
+  , utils = require('../util')
+  , collect = mkast.walker.collect;
 
 describe('mkabs:', function() {
 
@@ -19,28 +20,27 @@ describe('mkabs:', function() {
 
     var input = mkast.serialize(data)
       , output = fs.createWriteStream(target)
-      , opts = {input: input, output: output};
+      , opts = {input: input, output: output, base: 'http://base.com'};
     
     function onFinish() {
       var result = utils.result(target);
 
-      //console.dir(result);
-
       // open document
-      //expect(result[0]._type).to.eql(Node.DOCUMENT);
+      expect(result[0]._type).to.eql(Node.DOCUMENT);
       // mock document paragraph
-      //expect(result[1]._type).to.eql(Node.PARAGRAPH);
-      // eof main document
-      //expect(result[2]._type).to.eql(Node.EOF);
+      expect(result[1]._type).to.eql(Node.PARAGRAPH);
 
-      // link reference document + paragraph
-      //expect(result[3]._type).to.eql(Node.DOCUMENT);
-      //expect(result[4]._type).to.eql(Node.PARAGRAPH);
-      //expect(result[4]._firstChild._type).to.eql(Node.LINK);
-      //expect(result[4]._firstChild._linkType).to.eql('ref');
-      //expect(result[4]._firstChild._label).to.eql('example');
-      //expect(result[4]._firstChild._destination).to.eql('http://example.com');
-      //expect(result[5]._type).to.eql(Node.EOF);
+      var links = collect(result, Node.LINK)
+        , slash = links[0]
+        , anchor = links[1]
+        , absolute = links[2];
+
+      expect(slash._destination).to.eql('http://base.com/README.md');
+      expect(anchor._destination).to.eql('http://base.com#api');
+      expect(absolute._destination).to.eql('http://example.com');
+
+      // eof main document
+      expect(result[2]._type).to.eql(Node.EOF);
 
       done();
     }

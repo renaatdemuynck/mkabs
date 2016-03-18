@@ -1,6 +1,5 @@
 var mkast = require('mkast')
-  , Absolute = require('./absolute')
-  , Serialize = require('mkast/lib/serialize');
+  , Absolute = require('./absolute');
 
 /**
  *  Prepends a base URL to link destinations.
@@ -9,6 +8,7 @@ var mkast = require('mkast')
  *  @param {Object} [opts] processing options.
  *  @param {Function} [cb] callback function.
  *
+ *  @option {String} base path to prepend to relative links.
  *  @option {Readable} [input] input stream.
  *  @option {Writable} [output] output stream.
  *
@@ -22,8 +22,7 @@ function abs(opts, cb) {
 
   var base = opts.base;
 
-  var stream = new Absolute({base: base})
-    , serialize = new Serialize();
+  var stream = new Absolute({base: base});
 
   if(!opts.input || !opts.output) {
     return stream; 
@@ -31,7 +30,7 @@ function abs(opts, cb) {
 
   mkast.parser(opts.input)
     .pipe(stream)
-    .pipe(serialize)
+    .pipe(mkast.stringify())
     .pipe(opts.output);
 
   if(cb) {
