@@ -10,11 +10,15 @@ var mkast = require('mkast')
  *  `repository.url`; if there is still no base path then the operation is a 
  *  passthrough stream (noop).
  *
+ *  If `rel` is specified it is appended when the source for `base` is the 
+ *  `repository.url` field.
+ *
  *  @function abs
  *  @param {Object} [opts] processing options.
  *  @param {Function} [cb] callback function.
  *
  *  @option {String} base path to prepend to relative links.
+ *  @option {String=/blob/master} rel relative path to append to auto url.
  *  @option {Readable} [input] input stream.
  *  @option {Writable} [output] output stream.
  *

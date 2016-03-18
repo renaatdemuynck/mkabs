@@ -44,6 +44,9 @@ current working directory is made and a URL is extracted from `homepage` or
 `repository.url`; if there is still no base path then the operation is a
 passthrough stream (noop).
 
+If `rel` is specified it is appended when the source for `base` is the
+`repository.url` field.
+
 Returns an output stream.
 
 * `opts` Object processing options.
@@ -52,6 +55,7 @@ Returns an output stream.
 #### Options
 
 * `base` String path to prepend to relative links.
+* `rel` String=/blob/master relative path to append to auto url.
 * `input` Readable input stream.
 * `output` Writable output stream.
 
