@@ -1,8 +1,14 @@
 var mkast = require('mkast')
+  , path = require('path')
   , Absolute = require('./absolute');
 
 /**
  *  Prepends a base URL to link destinations.
+ *
+ *  When no base is given an attempt to load `package.json` from the 
+ *  current working directory is made and a URL is extracted from `homepage` or 
+ *  `repository.url`; if there is still no base path then the operation is a 
+ *  passthrough stream (noop).
  *
  *  @function abs
  *  @param {Object} [opts] processing options.
@@ -20,7 +26,22 @@ function abs(opts, cb) {
   opts.input = opts.input;
   opts.output = opts.output;
 
-  var base = opts.base;
+  var base = opts.base
+    , pkg;
+
+  if(!base) {
+    try {
+      pkg = require(path.join(process.cwd(), 'package.json'));
+      /* istanbul ignore next: not going to mock this */
+      if(pkg.homepage) {
+        base = pkg.homepage; 
+      /* istanbul ignore next: not going to mock change in cwd() */
+      }else if(pkg.repository && pkg.repository.url) {
+        base =  pkg.repository.url.replace(/\.(git)$/, ''); 
+      }
+    // optional auto-extract logic
+    }catch(e) {}
+  }
 
   var stream = new Absolute({base: base});
 

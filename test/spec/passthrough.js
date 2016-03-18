@@ -9,7 +9,7 @@ var expect = require('chai').expect
 
 describe('mkabs:', function() {
 
-  it('should passthrough with no base', function(done) {
+  it('should use repository with no base (package.json)', function(done) {
     var source = 'test/fixtures/abs.md'
       , target = 'target/abs.json.log'
       , data = parser.parse('' + fs.readFileSync(source))
@@ -20,7 +20,9 @@ describe('mkabs:', function() {
 
     var input = mkast.serialize(data)
       , output = fs.createWriteStream(target)
-      , opts = {input: input, output: output};
+      , opts = {input: input, output: output}
+      , base = require('../../package.json')
+          .repository.url.replace(/\.git$/, '');
     
     function onFinish() {
       var result = utils.result(target);
@@ -35,8 +37,8 @@ describe('mkabs:', function() {
         , anchor = links[1]
         , absolute = links[2];
 
-      expect(slash._destination).to.eql('/README.md');
-      expect(anchor._destination).to.eql('#api');
+      expect(slash._destination).to.eql(base + '/README.md');
+      expect(anchor._destination).to.eql(base + '#api');
       expect(absolute._destination).to.eql('http://example.com');
 
       // eof main document

@@ -6,7 +6,7 @@
 
 > Make relative links absolute
 
-Takes a base URL and prepends it to relative links to make them absolute. Relative links are deemed to be those beginning with a `/` or `#`.
+Takes a base URL and prepends it to relative links to make them absolute. Relative links are deemed to be those beginning with a `/`, `#` or `?`.
 
 ## Install
 
@@ -38,6 +38,11 @@ abs([opts][, cb])
 ```
 
 Prepends a base URL to link destinations.
+
+When no base is given an attempt to load `package.json` from the
+current working directory is made and a URL is extracted from `homepage` or
+`repository.url`; if there is still no base path then the operation is a
+passthrough stream (noop).
 
 Returns an output stream.
 
