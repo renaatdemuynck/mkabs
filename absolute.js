@@ -36,7 +36,7 @@ function transform(chunk, encoding, cb) {
     if(Node.is(node, Node.LINK)) {
       /* istanbul ignore next: must have a string value for re.test() */
       var dest = node._destination || ''
-        , re = /^[#\/\?]/;
+        , re = /^[\/]/;
       if(re.test(dest)) {
         node._destination = base + dest; 
       }

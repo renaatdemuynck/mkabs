@@ -27,7 +27,8 @@ function abs(opts, cb) {
   opts.output = opts.output;
 
   var base = opts.base
-    , pkg;
+    , pkg
+    , rel = opts.rel || '/blob/master'
 
   if(!base) {
     try {
@@ -37,7 +38,8 @@ function abs(opts, cb) {
         base = pkg.homepage; 
       /* istanbul ignore next: not going to mock change in cwd() */
       }else if(pkg.repository && pkg.repository.url) {
-        base =  pkg.repository.url.replace(/\.(git)$/, ''); 
+        base =  pkg.repository
+          .url.replace(/\.(git)$/, '') + rel; 
       }
     // optional auto-extract logic
     }catch(e) {}

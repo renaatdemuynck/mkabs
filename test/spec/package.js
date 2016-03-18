@@ -22,7 +22,7 @@ describe('mkabs:', function() {
       , output = fs.createWriteStream(target)
       , opts = {input: input, output: output}
       , base = require('../../package.json')
-          .repository.url.replace(/\.git$/, '');
+          .repository.url.replace(/\.git$/, '') + '/blob/master';
     
     function onFinish() {
       var result = utils.result(target);
@@ -39,9 +39,9 @@ describe('mkabs:', function() {
         , query = links[3];
 
       expect(slash._destination).to.eql(base + '/README.md');
-      expect(anchor._destination).to.eql(base + '#api');
+      expect(anchor._destination).to.eql('#api');
       expect(absolute._destination).to.eql('http://example.com');
-      expect(query._destination).to.eql(base + '?foo=val');
+      expect(query._destination).to.eql('?foo=val');
 
       // eof main document
       expect(result[2]._type).to.eql(Node.EOF);
