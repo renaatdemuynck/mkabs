@@ -1,7 +1,9 @@
 var through = require('through3')
   , ast = require('mkast')
   , Node = ast.Node
-  , walker = ast.walker.walk;
+  , walker = ast.walker.walk
+  , pattern = /^[\/]/
+  , greedy = /^[\/#\?]/;
 
 /**
  *  Makes relative link destinations absolute.
@@ -17,6 +19,8 @@ function AstAbsolute(opts) {
 
   // noop with no base path
   this.base = opts.base || '';
+
+  this.pattern = opts.greedy ? greedy : pattern;
 }
 
 /**
@@ -30,14 +34,14 @@ function AstAbsolute(opts) {
  *  @param {Function} callback function.
  */
 function transform(chunk, encoding, cb) {
-  var base = this.base;
+  var base = this.base
+    , ptn = this.pattern;
 
   function linkify(node) {
     if(Node.is(node, Node.LINK)) {
       /* istanbul ignore next: must have a string value for re.test() */
-      var dest = node._destination || ''
-        , re = /^[\/]/;
-      if(re.test(dest)) {
+      var dest = node._destination || '';
+      if(ptn.test(dest)) {
         node._destination = base + dest; 
       }
     } 

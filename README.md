@@ -37,7 +37,11 @@ ast.src('[readme](/README.md)')
 abs([opts][, cb])
 ```
 
-Prepends a base URL to link destinations.
+Prepends a base URL to relative link destinations.
+
+A relative link is deemed to be a link beginning a slash (/) unless the
+`greedy` option is given which will also include anchor links beginning
+with a hash (#) and query string links beginning with a question mark (?).
 
 When no base is given an attempt to load `package.json` from the
 current working directory is made and a URL is extracted from `homepage` or
@@ -56,6 +60,7 @@ Returns an output stream.
 
 * `base` String path to prepend to relative links.
 * `rel` String=/blob/master relative path to append to auto url.
+* `greedy` Boolean also convert links beginning with # and ?.
 * `input` Readable input stream.
 * `output` Writable output stream.
 

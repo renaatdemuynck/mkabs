@@ -3,7 +3,11 @@ var mkast = require('mkast')
   , Absolute = require('./absolute');
 
 /**
- *  Prepends a base URL to link destinations.
+ *  Prepends a base URL to relative link destinations.
+ *
+ *  A relative link is deemed to be a link beginning a slash (/) unless the 
+ *  `greedy` option is given which will also include anchor links beginning 
+ *  with a hash (#) and query string links beginning with a question mark (?).
  *
  *  When no base is given an attempt to load `package.json` from the 
  *  current working directory is made and a URL is extracted from `homepage` or 
@@ -19,6 +23,7 @@ var mkast = require('mkast')
  *
  *  @option {String} base path to prepend to relative links.
  *  @option {String=/blob/master} rel relative path to append to auto url.
+ *  @option {Boolean} [greedy] also convert links beginning with # and ?.
  *  @option {Readable} [input] input stream.
  *  @option {Writable} [output] output stream.
  *
@@ -49,7 +54,7 @@ function abs(opts, cb) {
     }catch(e) {}
   }
 
-  var stream = new Absolute({base: base});
+  var stream = new Absolute({base: base, greedy: opts.greedy});
 
   if(!opts.input || !opts.output) {
     return stream; 
