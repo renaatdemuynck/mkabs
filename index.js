@@ -22,7 +22,7 @@ var mkast = require('mkast')
  *  @param {Function} [cb] callback function.
  *
  *  @option {String} base path to prepend to relative links.
- *  @option {String=/blob/master} rel relative path to append to auto url.
+ *  @option {String=/blob/master} rel relative path to append to repository url.
  *  @option {Boolean} [greedy] also convert links beginning with # and ?.
  *  @option {Readable} [input] input stream.
  *  @option {Writable} [output] output stream.

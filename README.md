@@ -59,7 +59,7 @@ Returns an output stream.
 #### Options
 
 * `base` String path to prepend to relative links.
-* `rel` String=/blob/master relative path to append to auto url.
+* `rel` String=/blob/master relative path to append to repository url.
 * `greedy` Boolean also convert links beginning with # and ?.
 * `input` Readable input stream.
 * `output` Writable output stream.
