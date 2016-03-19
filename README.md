@@ -6,7 +6,7 @@
 
 > Make relative links absolute
 
-Takes a base URL and prepends it to relative links to make them absolute. Relative links are deemed to be those beginning with a `/`.
+Takes a base URL and prepends it to relative links to make them absolute. Relative links are deemed to be those beginning with a `/`, if the `greedy` option is specified than anchor links (#) and query string links (?) are also made absolute.
 
 ## Install
 
