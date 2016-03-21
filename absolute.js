@@ -15,7 +15,6 @@ var through = require('through3')
  */
 function AstAbsolute(opts) {
   opts = opts || {};
-  this.refs = [];
 
   // noop with no base path
   this.base = opts.base || '';
