@@ -1,7 +1,7 @@
 var through = require('through3')
   , ast = require('mkast')
   , Node = ast.Node
-  , walker = ast.walker.walk
+  , walker = ast.NodeWalker.walk
   , pattern = /^[\/]/
   , greedy = /^[\/#\?]/;
 
@@ -39,9 +39,9 @@ function transform(chunk, encoding, cb) {
   function linkify(node) {
     if(Node.is(node, Node.LINK)) {
       /* istanbul ignore next: must have a string value for re.test() */
-      var dest = node._destination || '';
+      var dest = node.destination || '';
       if(ptn.test(dest)) {
-        node._destination = base + dest; 
+        node.destination = base + dest; 
       }
     } 
   }

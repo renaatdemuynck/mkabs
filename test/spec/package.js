@@ -5,7 +5,7 @@ var expect = require('chai').expect
   , parser = new mkast.Parser()
   , mkabs = require('../../index')
   , utils = require('../util')
-  , collect = mkast.walker.collect;
+  , collect = mkast.NodeWalker.collect;
 
 describe('mkabs:', function() {
 
@@ -16,7 +16,7 @@ describe('mkabs:', function() {
 
     // mock file for correct relative path
     // mkcat normally injects this info
-    data._file = source;
+    data.file = source;
 
     var input = mkast.serialize(data)
       , output = fs.createWriteStream(target)
@@ -28,9 +28,9 @@ describe('mkabs:', function() {
       var result = utils.result(target);
 
       // open document
-      expect(result[0]._type).to.eql(Node.DOCUMENT);
+      expect(result[0].type).to.eql(Node.DOCUMENT);
       // mock document paragraph
-      expect(result[1]._type).to.eql(Node.PARAGRAPH);
+      expect(result[1].type).to.eql(Node.PARAGRAPH);
 
       var links = collect(result, Node.LINK)
         , slash = links[0]
@@ -38,13 +38,13 @@ describe('mkabs:', function() {
         , absolute = links[2]
         , query = links[3];
 
-      expect(slash._destination).to.eql(base + '/README.md');
-      expect(anchor._destination).to.eql('#api');
-      expect(absolute._destination).to.eql('http://example.com');
-      expect(query._destination).to.eql('?foo=val');
+      expect(slash.destination).to.eql(base + '/README.md');
+      expect(anchor.destination).to.eql('#api');
+      expect(absolute.destination).to.eql('http://example.com');
+      expect(query.destination).to.eql('?foo=val');
 
       // eof main document
-      expect(result[2]._type).to.eql(Node.EOF);
+      expect(result[2].type).to.eql(Node.EOF);
 
       done();
     }
