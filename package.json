@@ -22,7 +22,7 @@
     "absolute"
   ],
   "dependencies": {
-    "mkast": "~1.1.0",
+    "mkast": "~1.2.2",
     "through3": "~1.1.5"
   },
   "devDependencies": {
