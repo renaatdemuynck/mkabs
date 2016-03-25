@@ -18,6 +18,18 @@ npm i mkabs --save
 
 For the command line interface install [mkdoc][] globally (`npm i -g mkdoc`).
 
+---
+
+- [Install](#install)
+- [Usage](#usage)
+- [Help](#help)
+- [API](#api)
+   - [abs](#abs)
+   - [Absolute](#absolute)
+- [License](#license)
+
+---
+
 ## Usage
 
 Create the stream and write a [commonmark][] document:
@@ -81,6 +93,21 @@ Returns an output stream.
 * `greedy` Boolean also convert links beginning with # and ?.
 * `input` Readable input stream.
 * `output` Writable output stream.
+
+### Absolute
+
+```javascript
+Absolute([opts])
+```
+
+Makes relative link destinations absolute.
+
+* `opts` Object stream options.
+
+#### Options
+
+* `base` String prepend path for relative links.
+* `greedy` Boolean=false convert # and ? link destinations.
 
 ## License
 

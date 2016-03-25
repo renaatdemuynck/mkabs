@@ -8,12 +8,13 @@ var through = require('through3')
 /**
  *  Makes relative link destinations absolute.
  *
- *  @module {constructor} AstAbsolute
+ *  @module {constructor} Absolute
  *  @param {Object} [opts] stream options.
  *
- *  @option {String} base prepend path for relative links.
+ *  @option {String} [base] prepend path for relative links.
+ *  @option {Boolean=false} [greedy] convert # and ? link destinations.
  */
-function AstAbsolute(opts) {
+function Absolute(opts) {
   opts = opts || {};
 
   // noop with no base path
@@ -26,7 +27,7 @@ function AstAbsolute(opts) {
  *  Stream transform.
  *
  *  @private {function} transform
- *  @member AstAbsolute
+ *  @member Absolute
  *
  *  @param {Array} node input AST node.
  *  @param {String} encoding character encoding.
@@ -53,4 +54,4 @@ function transform(chunk, encoding, cb) {
   cb();
 }
 
-module.exports = through.transform(transform, {ctor: AstAbsolute})
+module.exports = through.transform(transform, {ctor: Absolute})

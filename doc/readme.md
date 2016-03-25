@@ -10,6 +10,10 @@ The typical use case is for README documents whose forward slash links work as e
 
 <? @include {=readme} install.md ?>
 
+***
+<!-- @toc -->
+***
+
 ## Usage
 
 Create the stream and write a [commonmark][] document:
@@ -18,5 +22,5 @@ Create the stream and write a [commonmark][] document:
 
 <? @include {=readme} help.md ?>
 
-<? @exec mkapi index.js --title=API --level=2 ?>
+<? @exec mkapi index.js absolute.js --title=API --level=2 ?>
 <? @include {=readme} license.md links.md ?>
