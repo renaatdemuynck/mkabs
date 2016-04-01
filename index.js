@@ -50,7 +50,7 @@ function abs(opts, cb) {
         base =  pkg.repository
           .url.replace(/\.(git)$/, '') + rel; 
       }
-    // optional auto-extract logic
+      // optional auto-extract logic
     }catch(e) {}
   }
 
