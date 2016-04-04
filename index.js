@@ -42,11 +42,8 @@ function abs(opts, cb) {
   if(!base) {
     try {
       pkg = require(path.join(process.cwd(), 'package.json'));
-      /* istanbul ignore next: not going to mock this */
-      if(pkg.homepage) {
-        base = pkg.homepage; 
       /* istanbul ignore next: not going to mock change in cwd() */
-      }else if(pkg.repository && pkg.repository.url) {
+      if(pkg.repository && pkg.repository.url) {
         base =  pkg.repository
           .url.replace(/\.(git)$/, '') + rel; 
       }
