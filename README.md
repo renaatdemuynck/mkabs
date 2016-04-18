@@ -24,8 +24,8 @@ For the command line interface install [mkdoc][] globally (`npm i -g mkdoc`).
 - [Usage](#usage)
 - [Help](#help)
 - [API](#api)
-   - [abs](#abs)
-   - [Absolute](#absolute)
+  - [abs](#abs)
+  - [Absolute](#absolute)
 - [License](#license)
 
 ---
@@ -46,17 +46,18 @@ ast.src('[readme](/README.md)')
 ## Help
 
 ```
-mkabs [options]
+Usage: mkabs [options]
 
-Make relative links absolute.
+  Make relative links absolute.
 
-  -b, --base=[URL]       Base URL for absolute links
-  -r, --relative=[PATH]  Relative path when repository url
-  -g, --greedy           Convert links starting with # and ?
-  -h, --help             Display this help and exit
-  --version              Print the version and exit
+Options
+  -b, --base=[URL]        Base URL for absolute links
+  -r, --relative=[PATH]   Relative path when repository url
+  -g, --greedy            Convert links starting with # and ?
+  -h, --help              Display help and exit
+  --version               Print the version and exit
 
-Report bugs to https://github.com/mkdoc/mkabs/issues
+mkabs@1.2.3
 ```
 
 ## API
@@ -115,7 +116,7 @@ MIT
 
 ---
 
-*Created by [mkdoc](https://github.com/mkdoc/mkdoc) on March 26, 2016*
+Created by [mkdoc](https://github.com/mkdoc/mkdoc) on April 18, 2016
 
 [mkdoc]: https://github.com/mkdoc/mkdoc
 [mkparse]: https://github.com/mkdoc/mkparse
