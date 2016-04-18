@@ -14,13 +14,7 @@ The typical use case is for README documents whose forward slash links work as e
 <!-- @toc -->
 ***
 
-## Usage
-
-Create the stream and write a [commonmark][] document:
-
-<? @source {javascript=s/\.\.\/index/mkabs/gm} usage.js ?>
-
-<? @include {=readme} help.md ?>
+<? @include {=readme} usage.md example.md help.md ?>
 
 <? @exec mkapi index.js absolute.js --title=API --level=2 ?>
 <? @include {=readme} license.md links.md ?>

@@ -22,6 +22,7 @@ For the command line interface install [mkdoc][] globally (`npm i -g mkdoc`).
 
 - [Install](#install)
 - [Usage](#usage)
+- [Example](#example)
 - [Help](#help)
 - [API](#api)
   - [abs](#abs)
@@ -41,6 +42,20 @@ ast.src('[readme](/README.md)')
   .pipe(abs({base: 'https://github.com/mkdoc/mkabs'}))
   .pipe(ast.stringify({indent: 2}))
   .pipe(process.stdout);
+```
+
+## Example
+
+Make links absolute using data in `package.json`:
+
+```shell
+mkcat README.md | mkabs | mkout
+```
+
+Make links absolute using an specific URL:
+
+```shell
+mkcat README.md | mkabs -b http://example.com | mkout
 ```
 
 ## Help
