@@ -111,7 +111,7 @@ describe('mkabs:', function() {
 
     var input = mkast.serialize(data)
       , output = fs.createWriteStream(target)
-      , opts = {input: input, output: output, base: 'http://base.com', images: false};
+      , opts = {input: input, output: output, base: 'http://base.com'};
     
     mkabs(opts);
 

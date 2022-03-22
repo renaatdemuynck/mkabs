@@ -20,6 +20,9 @@ function Absolute(opts) {
   // noop with no base path
   this.base = opts.base || '';
 
+  // default to false for backwards compatibility
+  this.images = opts.images || false;
+
   this.pattern = opts.greedy ? greedy : pattern;
 }
 
@@ -35,10 +38,11 @@ function Absolute(opts) {
  */
 function transform(chunk, encoding, cb) {
   var base = this.base
+    , images = this.images
     , ptn = this.pattern;
 
   function linkify(node) {
-    if(Node.is(node, Node.LINK)) {
+    if(Node.is(node, Node.LINK) || (images && Node.is(node, Node.IMAGE))) {
       /* istanbul ignore next: must have a string value for re.test() */
       var dest = node.destination || '';
       if(ptn.test(dest)) {

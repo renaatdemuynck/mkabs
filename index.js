@@ -51,7 +51,7 @@ function abs(opts, cb) {
     }catch(e) {}
   }
 
-  var stream = new Absolute({base: base, greedy: opts.greedy});
+  var stream = new Absolute({base: base, images: opts.images, greedy: opts.greedy});
 
   if(!opts.input || !opts.output) {
     return stream; 
