@@ -1,0 +1,1 @@
+This is a mock paragraph with an image with a relative URL: ![some image](/example.png) and an image with a qualified URL ![external image](http://example.com/external.png).
