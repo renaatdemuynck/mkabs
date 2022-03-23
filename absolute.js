@@ -23,6 +23,9 @@ function Absolute(opts) {
   // default to false for backwards compatibility
   this.images = opts.images || false;
 
+  // default to `base` if not set
+  this.imageBase = opts.imageBase || (opts.images && opts.base);
+
   this.pattern = opts.greedy ? greedy : pattern;
 }
 
@@ -39,14 +42,21 @@ function Absolute(opts) {
 function transform(chunk, encoding, cb) {
   var base = this.base
     , images = this.images
+    , imageBase = this.imageBase
     , ptn = this.pattern;
 
   function linkify(node) {
-    if(Node.is(node, Node.LINK) || (images && Node.is(node, Node.IMAGE))) {
+    if(Node.is(node, Node.LINK) || (Node.is(node, Node.IMAGE) && images && !imageBase)) {
       /* istanbul ignore next: must have a string value for re.test() */
       var dest = node.destination || '';
       if(ptn.test(dest)) {
         node.destination = base + dest; 
+      }
+    } else if(Node.is(node, Node.IMAGE) && imageBase) {
+      /* istanbul ignore next: must have a string value for re.test() */
+      var dest = node.destination || '';
+      if(ptn.test(dest)) {
+        node.destination = imageBase + dest; 
       }
     } 
   }
