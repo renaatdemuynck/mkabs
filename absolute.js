@@ -12,6 +12,8 @@ var through = require('through3')
  *  @param {Object} [opts] stream options.
  *
  *  @option {String} [base] prepend path for relative links.
+ *  @option {Boolean=false} [images] also handle images.
+ *  @option {String} [imageBase] prepend path for relative image URLs.
  *  @option {Boolean=false} [greedy] convert # and ? link destinations.
  */
 function Absolute(opts) {
