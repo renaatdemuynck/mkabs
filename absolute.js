@@ -48,15 +48,14 @@ function transform(chunk, encoding, cb) {
     , ptn = this.pattern;
 
   function linkify(node) {
+    /* istanbul ignore next: must have a string value for re.test() */
+    var dest = node.destination || '';
+
     if(Node.is(node, Node.LINK) || (Node.is(node, Node.IMAGE) && images && !imageBase)) {
-      /* istanbul ignore next: must have a string value for re.test() */
-      var dest = node.destination || '';
       if(ptn.test(dest)) {
         node.destination = base + dest; 
       }
     } else if(Node.is(node, Node.IMAGE) && images && imageBase) {
-      /* istanbul ignore next: must have a string value for re.test() */
-      var dest = node.destination || '';
       if(ptn.test(dest)) {
         node.destination = imageBase + dest; 
       }
