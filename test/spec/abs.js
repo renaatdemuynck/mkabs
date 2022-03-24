@@ -63,4 +63,184 @@ describe('mkabs:', function() {
     })
   });
 
+  it('should make relative image URLs absolute when `images` option is set', function(done) {
+    var source = 'test/fixtures/image.md'
+      , target = 'target/abs.json.log'
+      , data = parser.parse('' + fs.readFileSync(source))
+
+    // mock file for correct relative path
+    // mkcat normally injects this info
+    data.file = source;
+
+    var input = mkast.serialize(data)
+      , output = fs.createWriteStream(target)
+      , opts = {input: input, output: output, base: 'http://base.com', images: true};
+    
+    mkabs(opts);
+
+    output.once('finish', function() {
+      var result = utils.result(target);
+
+      // open document
+      expect(result[0].type).to.eql(Node.DOCUMENT);
+      // mock document paragraph
+      expect(result[1].type).to.eql(Node.PARAGRAPH);
+
+      var images = collect(result, Node.IMAGE)
+        , slash = images[0]
+        , absolute = images[1];
+
+      expect(slash.destination).to.eql('http://base.com/example.png');
+      expect(absolute.destination).to.eql('http://example.com/external.png');
+
+      // eof main document
+      expect(result[2].type).to.eql(Node.EOF);
+
+      done();
+    })
+  });
+
+  it('should not make relative image URLs absolute when both `images` and `imageBase` options are not set', function(done) {
+    var source = 'test/fixtures/image.md'
+      , target = 'target/abs.json.log'
+      , data = parser.parse('' + fs.readFileSync(source))
+
+    // mock file for correct relative path
+    // mkcat normally injects this info
+    data.file = source;
+
+    var input = mkast.serialize(data)
+      , output = fs.createWriteStream(target)
+      , opts = {input: input, output: output, base: 'http://base.com'};
+    
+    mkabs(opts);
+
+    output.once('finish', function() {
+      var result = utils.result(target);
+
+      // open document
+      expect(result[0].type).to.eql(Node.DOCUMENT);
+      // mock document paragraph
+      expect(result[1].type).to.eql(Node.PARAGRAPH);
+
+      var images = collect(result, Node.IMAGE)
+        , slash = images[0];
+
+      expect(slash.destination).to.eql('/example.png');
+
+      // eof main document
+      expect(result[2].type).to.eql(Node.EOF);
+
+      done();
+    })
+  });
+
+  it('should allow a different base for image URLs when `imageBase` option is set', function(done) {
+    var source = 'test/fixtures/image.md'
+      , target = 'target/abs.json.log'
+      , data = parser.parse('' + fs.readFileSync(source))
+
+    // mock file for correct relative path
+    // mkcat normally injects this info
+    data.file = source;
+
+    var input = mkast.serialize(data)
+      , output = fs.createWriteStream(target)
+      , opts = {input: input, output: output, base: 'http://base.com', imageBase: 'http://image-base.com', images: true};
+    
+    mkabs(opts);
+
+    output.once('finish', function() {
+      var result = utils.result(target);
+
+      // open document
+      expect(result[0].type).to.eql(Node.DOCUMENT);
+      // mock document paragraph
+      expect(result[1].type).to.eql(Node.PARAGRAPH);
+
+      var links = collect(result, Node.LINK)
+        , images = collect(result, Node.IMAGE)
+        , slashImage = images[0]
+        , slashLink = links[0];
+
+      expect(slashImage.destination).to.eql('http://image-base.com/example.png');
+      expect(slashImage.destination).to.not.eql(slashLink.destination);
+
+      // eof main document
+      expect(result[2].type).to.eql(Node.EOF);
+
+      done();
+    })
+  });
+
+  it('should implicitly set `images` to TRUE when `imageBase` option is set', function(done) {
+    var source = 'test/fixtures/image.md'
+      , target = 'target/abs.json.log'
+      , data = parser.parse('' + fs.readFileSync(source))
+
+    // mock file for correct relative path
+    // mkcat normally injects this info
+    data.file = source;
+
+    var input = mkast.serialize(data)
+      , output = fs.createWriteStream(target)
+      , opts = {input: input, output: output, imageBase: 'http://image-base.com'};
+    
+    mkabs(opts);
+
+    output.once('finish', function() {
+      var result = utils.result(target);
+
+      // open document
+      expect(result[0].type).to.eql(Node.DOCUMENT);
+      // mock document paragraph
+      expect(result[1].type).to.eql(Node.PARAGRAPH);
+
+      var images = collect(result, Node.IMAGE)
+        , slash = images[0];
+
+      expect(slash.destination).to.eql('http://image-base.com/example.png');
+
+      // eof main document
+      expect(result[2].type).to.eql(Node.EOF);
+
+      done();
+    })
+  });
+
+  it('should not handle images when `imageBase` option is set but `images` is explicitly set to FALSE', function(done) {
+    var source = 'test/fixtures/image.md'
+      , target = 'target/abs.json.log'
+      , data = parser.parse('' + fs.readFileSync(source))
+
+    // mock file for correct relative path
+    // mkcat normally injects this info
+    data.file = source;
+
+    var input = mkast.serialize(data)
+      , output = fs.createWriteStream(target)
+      , opts = {input: input, output: output, images: false, imageBase: 'http://image-base.com'};
+    
+    mkabs(opts);
+
+    output.once('finish', function() {
+      var result = utils.result(target);
+
+      // open document
+      expect(result[0].type).to.eql(Node.DOCUMENT);
+      // mock document paragraph
+      expect(result[1].type).to.eql(Node.PARAGRAPH);
+
+      var images = collect(result, Node.IMAGE)
+        , slash = images[0];
+
+      expect(slash.destination).to.eql('/example.png');
+
+      // eof main document
+      expect(result[2].type).to.eql(Node.EOF);
+
+      done();
+    })
+  });
+
 });

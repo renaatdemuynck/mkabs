@@ -12,6 +12,8 @@ var through = require('through3')
  *  @param {Object} [opts] stream options.
  *
  *  @option {String} [base] prepend path for relative links.
+ *  @option {Boolean=false} [images] also handle images.
+ *  @option {String} [imageBase] prepend path for relative image URLs.
  *  @option {Boolean=false} [greedy] convert # and ? link destinations.
  */
 function Absolute(opts) {
@@ -19,6 +21,12 @@ function Absolute(opts) {
 
   // noop with no base path
   this.base = opts.base || '';
+
+  // default to false for backwards compatibility
+  this.images = opts.images ?? Boolean(opts.imageBase);
+
+  // default to `base` if not set
+  this.imageBase = opts.imageBase || this.base;
 
   this.pattern = opts.greedy ? greedy : pattern;
 }
@@ -35,14 +43,21 @@ function Absolute(opts) {
  */
 function transform(chunk, encoding, cb) {
   var base = this.base
+    , images = this.images
+    , imageBase = this.imageBase
     , ptn = this.pattern;
 
   function linkify(node) {
-    if(Node.is(node, Node.LINK)) {
-      /* istanbul ignore next: must have a string value for re.test() */
-      var dest = node.destination || '';
+    /* istanbul ignore next: must have a string value for re.test() */
+    var dest = node.destination || '';
+
+    if(Node.is(node, Node.LINK) || (Node.is(node, Node.IMAGE) && images && !imageBase)) {
       if(ptn.test(dest)) {
         node.destination = base + dest; 
+      }
+    } else if(Node.is(node, Node.IMAGE) && images && imageBase) {
+      if(ptn.test(dest)) {
+        node.destination = imageBase + dest; 
       }
     } 
   }

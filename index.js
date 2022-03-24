@@ -22,6 +22,8 @@ var mkast = require('mkast')
  *  @param {Function} [cb] callback function.
  *
  *  @option {String} base path to prepend to relative links.
+ *  @option {Boolean=false} [images] also handle images.
+ *  @option {String} [imageBase] base path to prepend to relative image URLs.
  *  @option {String=/blob/master} rel relative path to append to repository url.
  *  @option {Boolean} [greedy] also convert links beginning with # and ?.
  *  @option {Readable} [input] input stream.
@@ -51,7 +53,7 @@ function abs(opts, cb) {
     }catch(e) {}
   }
 
-  var stream = new Absolute({base: base, greedy: opts.greedy});
+  var stream = new Absolute({base: base, images: opts.images, imageBase: opts.imageBase, greedy: opts.greedy});
 
   if(!opts.input || !opts.output) {
     return stream; 
